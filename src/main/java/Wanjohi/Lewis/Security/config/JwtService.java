@@ -53,7 +53,11 @@ public class JwtService<userDetails> {
    }
 
     private boolean isTokenValid(String token) {
-        return false;
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaims(token, Claims::getExpiration);
     }
 
 

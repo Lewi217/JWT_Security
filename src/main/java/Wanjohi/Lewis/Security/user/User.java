@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @Data
 @Builder
@@ -32,7 +32,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        if (role != null) {
+            return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+        } else {
+            return Collections.emptyList(); // or handle as per your application's logic
+        }
     }
 
     @Override

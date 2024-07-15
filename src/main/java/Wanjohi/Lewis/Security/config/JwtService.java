@@ -17,7 +17,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "Aa7R2w4SMBaAKRZmmhLFPHZ92rI5eXpjP4T131Lo1hiPokPY2ocfJAebpZ+ybOyEVRqeU3rxzo8fgrNTHOau04Vu7n2kcijZmkflskTRxF4=\n";
+    // Ensure your SECRET_KEY does not contain newline characters.
+    private static final String SECRET_KEY = "Aa7R2w4SMBaAKRZmmhLFPHZ92rI5eXpjP4T131Lo1hiPokPY2ocfJAebpZ+ybOyEVRqeU3rxzo8fgrNTHOau04Vu7n2kcijZmkflskTRxF4=";
 
     public String extractUsername(String token) {
         return extractClaims(token, Claims::getSubject);
@@ -32,12 +33,8 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ) {
-        return Jwts
-                .builder()
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -60,8 +57,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
